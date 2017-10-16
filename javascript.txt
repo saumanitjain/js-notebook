@@ -1,0 +1,456 @@
+JavaScript Best Practice
+$$$Avoid global variables whenever possible
+$$$$Bad cause
+#Name clash and one can change and another will be affected
+#minimize the memory
+##Use one global object and encapsulate all extreamly needed variables into that object
+##Use closer to avoid global variables
+##Use var to define a variable otherwise it will be global
+# use closer to and object to minimize global variables
+$$$Variable naming convension
+# Use the meaningful name so that other can understand the code easily
+# Not to big and not to short (short and meaningful)
+$$$Automatic semi-column insertion
+# Always always  add semi-column after each statement,
+#JavaScript parser automatically adds forgotten semi-column and some time it may cause problem
+like
+return
+      12; 
+can be converted into 
+return;
+     12; instead of return 12;
+#Always use below style (add curly braces at the same line to avoid automatically adding semi-column by js compiler)
+function f(){
+////
+}	 
+because js parser may add a semi-column after function();
+function()
+{
+///
+}
+couldbe be parsed as
+function();
+{
+//
+}
+$$$ternary condition
+#Keep the ternary block isolated to maintain it's mutability
+var output = "the output is": +
+     conditon? statement1: statement2 (wrong because + will contate string and condition and hence it will always evalute true)
+var output = "the output is": +
+     (conditon? statement1: statement2) (right)
+
+$$$ Minimize DOM usages whenever possible because it's expensive operation
+$$$ Use curly braces
+$$$$$$ equality operator 
+# ==, !=  perform type convension
+# ===, !== to avoid type convension (identity operator)
+# Use let (ECMA6)keyboard to declare variable instead of var keyboard because it allows us to declare block label variable
+# if we create any variable without let or var then by default it is decared as global variable
+$$$ JavaScript provides 4 below ways to define funciton 
+ # ananomious function // example immidiately invocable funciton (funciton(/*$, age*/){})(/*jQuery*,10/);
+ # lambda expression
+ # named function
+ # constructor funciton 
+$$$ ECMA5 introduce "use strict";
+# "use strict"; can be used on function label or global label 
+# in strict mode , variable can be used until they are not defined.
+# in strict mode object's property can't be deleted if they are not exist or not deletable like delete object.prototype
+# in strict mode, keyboard or reserved keyboard can not be used as variable/function name 
+############ Object in JavaScript##############
+# Many ways to create object in javascript
+# by new operator
+# by Object literal let myObj = {};
+# by Object.create(prototypeObject,propertiesObject);
+# Object.create methods accepts two arguments.
+   1. prototypeObject: Newly created objects prototype object. It has to be an object or null. 
+   2. propertiesObject: Properties of the new object. This argument is optional
+# what if we want to define property with some restriction
+Object.defineProperty(myObj, status,{
+ value : {},
+ writable: false
+});
+
+#######Prototypes###########
+funciton PersonFactory(fname, lname){
+  return {
+    "firstname":fname,
+	"lastName" : lname,
+	"greet": funciton(){
+	  return "Hello"+firstname+" "+ lastName;
+	} //greet
+  }; //return
+} //PersonFactory
+let person1  = PersonFactory("persoon1","Deo");
+let person2  = PersonFactory("persoon2","Smit");
+# Heere there is is big problem of greet funciton, each object has it's own greet function that can consume lots of memory 
+# To avoid it we can use prototypical inharitance
+# Each object has a internal property : prototype that points to either any other object or null
+let obj1 = {a:12}
+let obje2 {b: 13,__proto__:obj1} 
+or obj2.prototype = obj1;
+#####OR in constructor programming########
+Person(fname,lname) {}
+Employe {
+Person.call(this,fname,lname);
+}
+Employe.prototype =new Person();
+######### call and apply ####
+# call calls the function in context of pirst argument and subsequent argument are passed in function 
+#apply calls the funciton in context of first argument and second argument is an array that is passed to functions subsequent arg
+function sayHello(){return this.name;}
+sayHello()// will throw error since wont fine this.sayhello;
+obj {name:"John"}
+sayHello.call(obj);or sayHello.apply(obj)
+Chrome Deve tool
+appli solid principal:---  
+#############################################ECMA6 or ECMA 2015##############################################3
+##Feature
+ #Class: Can say a constructor function
+ Class Person {
+    constructor(fname,lname){
+	this.fname = fname;
+	this.lname = lname;
+	}
+	getFullName : funciton(){return this.fname+this.lname;}
+ }
+ ###Basically when we create an object of Person class
+  # It create a constructor function 
+  # And add getFullNmae method in object prototype;
+  # it can have static data also, It wont be a part of object
+  Class Employe extends Person {
+    constructor(){
+	  super(fname,lname) //same as java
+	  this.orgType = orgType
+	}
+  }
+ ###### Privacy #################
+var Person = (function() {
+
+   let privateData = new WeakMap();
+
+   class Person {
+     constructor(fname,lname){
+          privateData.set(this, { fname: fname, lname:lname });
+       }
+  fullName(){
+   return privateData.get(this).fname + " " +privateData.get(this).fname;
+  }
+ }
+   return Person;
+}());
+
+let emp = new Person("John","doe");
+console.log(emp.fullName());
+###############JavaScript Immutable#################
+let myObj ={};
+Object.freeze(myObj);
+################# this in JavaScript####################
+#this this determined only when a function is called
+# this is an object of context in which it's called
+################# Module Support########################
+# Now a days it's most popular javascript patter.
+#example by iife (immidiately invocable funciton expression) in util.js file; 
+let calculator = (function($){
+      let element = document.getElementById("calResult");
+	  document.addEventListener("click", funciton(event){
+	    let target = event.target;
+		if(target.match("=")){
+		    eval();
+		}
+		if(target.match("calResult")){
+		    return;
+		}
+		  add(target);
+	  });
+	  let memory =[];
+	  let calc={};
+	  calc.add = funciton(value){
+	       element.innherHtml = elment.innnerHtml+value;
+	  };
+	  calc.eval : funciton(){
+         element.innherHtml = evel(elment.innnerHtml)
+      };
+	  return calc;
+	  
+})(jQuery); // () call it funciton immidiately and we can also pass the param here,
+### similary we can add classes to element and changes the look and feel
+## Avoid axcessive use of DOM changes
+### I believe DOM is a swming pool and elementare coin. so it's not good to dive in swming pool to find the coin
+##### Import export modules##########
+# import the above module in main.js file
+import {calculator} from './modules/util'
+calculator.add(12,33);
+
+#####################NPM################
+### npm is a dependencies manager tool
+npm -veerson
+npm init //create a new npm module
+npm install jquery --save
+npm install eslint --save
+npm install //install all the dependency menstioned in package.json
+{
+  "name": "npm-first",
+  "version": "1.0.0",
+  "description": "This is first NPM utility",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+	"eslint" : "./node_modules/eslint/.bin/eslint ./src/js/*.js -fix --cache"
+  },
+  "author": "SaurabhK jain",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.2.1"
+  }
+}
+npm run test
+#We can mention any other script  (ex eslint) in script and run like test
+npm run eslint
+###########################Gulp#############################
+#It's a build tool.
+#convert like saas to css, typescript to javascript, minify js, and create a build package, can run test cases and many more
+# it uses gulpfile.js to write dif task as below
+var gulp = require(gulp);
+var sass = require('gulp-sass');
+var watch = require('gulp-watch');
+var changed = require('gulp-changed');
+var autoprefixer = require('gulp-autoprefixer');
+var sourcemaps = require('gulp-sourcemaps');
+var connect = require('gulp-connect');
+var header = require('gulp-header');
+var eslint = require('gulp-eslint');
+var path = require('path');
+var fs = require('fs');
+var Server = require('karma').Server;
+var replace = require('gulp-replace');
+
+gulp('script' function(){
+///code
+});
+gulp('http' [script], function(){
+  //;
+});
+
+gulp script
+gulp('watch' function(){
+  gulp.watch(['./**/*.js','./**/*.css'],[script]);
+});
+gulp('default' [http,watch])
+# more code then more configuration(like grunt) and also fast
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+######################################Advance JavaScirpt#####################################################################################
+# Javascript execute the code in two pass
+ # 1) Hoisting (variable and function hoisting)
+ # 2) Parse and run
+####################### JavaScirpt Hoisting############
+#JavaScript shift the all variable declaration by "var" keyboard and function declaration at the top  of it's scope is called hoisting 
+# Remember variables  declared by let keyboard are not hoisted
+# Function are hoisted before variable;
+# function or variable are overwridden if we declare them again
+a;
+b;
+var a = b;
+var b = 2;
+a;
+b;
+#after hoisting
+var a;
+var b;
+a;
+b;
+a=b;
+b =2;
+a;
+b;
+----function example
+(function(){
+g();
+  function g(){
+    console.log("g");
+    f();
+  }
+var  f = function(){
+      console.log("first");
+    };
+})();
+#after hoisting
+(function(){
+  function g(){  //function comes first in hoisting
+    console.log("g");
+    f();
+  }
+  var f; // after function variables are declared
+g();
+f = function(){
+      console.log("first");
+    };
+})();
+#output : -f is not a funciton
+
+###########SCOPE####
+#JavaScirpt two scope scope 1) function 2) block.
+#JavaScirpt first find the variable in local scope if not find then go to immidiate upper label and so on and if still not find then
+# 1) (in not strict mode )it declare at top most label (window) and assing a value undefined ie var name =undefined;
+# 2) (in strict mode)  if variable is not found then it gives error like undeclare. ie does not decare the variable for us.
+# undefined means when we declare a variable but not assing. undefined is a value which is assinged to all declared (but not assigned) variables
+# undeclared means we have even not declared and trying to use it.
+# ECMA6 has indroduce a 'let' keyboard to declare block label variable;
+# function(a, b) means before ECMA 6 : funciton (var a, var b) after ECMA 6 (let a, let b);
+#
+########################## Function declaration and funciton expression
+# if 'function' is the first keyboard in statement then it's funciton declaration; ex. funciton myFn(){};
+# rest is 'funciton expression' ex var fun = funciton myFn(){};
+# Use funciton declaration over function expression to take advantage of hoisting
+########eval()
+## Even ever use it.cause
+var a =12;
+function myFunc(str){
+eval(str);
+console.log(a) //output 20
+}
+myFunc("var a=20;");
+############Dynamic scoping######
+
+funciton foo(){
+ console.log(str); //print "dynamic scope"
+}
+function bar(){
+ var str ="dynamic scope"
+ foo();
+}
+bar();
+#################this keyboard#############################
+# In javascript, every funciton has a reference of it's execution context , called this (and in 'use strict' mode this hold undefined value)
+ex:-
+function foo(){
+var name ="foo";
+baz();
+}
+function baz(){
+ console.log(this.name);
+}
+var name ="window"
+foo();
+#output : window # because 
+##foo.call(obj); or foo.app(obj)//calls the foo function on "obj" object in another words obj is 'this' in foo funciton.
+#call and apply both are same, the only diff is way of passing argument
+# food.bind(obj) //bind the foo funciton to obj ie keyboard this would be obj inside food function.
+###############################new #######################
+#It does below things.
+ #
+var add =  new food(){
+     var this = {}; //automatically an object is created and assigned to this variable;
+	 .........
+	 return this; //At the end of this keyboard is returned;
+ }
+ #so add =this; //at the end of function called with new keyboard
+# keyboard new has higher precedance explicit bid ie
+new fn.call(obj) > fn.call(obj) > context > can global
+#####################Closer####################33
+#Lexical scoping : function find some variable inside it then it use it otherwise it find the variable at it's immidiate parent funciton and so on... is called lexical or compile time scoping.
+#Closer : when a function use lexical scope to resolves it's variable/funciton scope is called closer;
+
+##########javascript most popular patter.
+#1. iife  ex jquery 
+#2. module . ex require
+
+###################Object Orientation in JavaScirpt ###############################
+# JavaScirpt is actually an object oriented language
+# Java is not object oriented actually it's class oriented.
+# Object is a funciton and it is linked to an anonymous object by prototype property.
+# Eeven each function has a hidden property named 'prototype' that is linked to an anonymous object.
+# Each object has a hindden property named "__proto__" that is linked to an anonymous object
+# If we creat an object by 'new funciton()' then in that case funciton's prototype property and object's __proto__ property points to same anonymous object
+# the anonymous object has a property called constructor that point's to function
+ie
+say funciton  dec Foo <====>  ananomious object say ao
+then Foo.prototype  = ao;
+and ao.constructor = Foo;
+var obj = new Foo();
+obj.__proto__ == ao
+#JavaScript has a build in function named 'Function()' that also point to an anonymous obj (say aof) (having call apply, bind funciton)
+# since in JavaScirpt, each object is a function so it also has constructor property.
+Foo.constructor = Function
+Foo.__proto__ =  aof
+# Do say or never say JavaScirpt has inharitance because inharitance means one object copy the something from other obj.
+# JavaScirpt have prototypical inharitance means obe object does not copy anything from another obj it links them
+## OLOO : object linked to other object
+## Object inharitance machenics;
+var obj ={
+  add: add(a,b){};
+  del: del(){}
+}
+var obj2  =  Object.create(obj,); //create an obj2 whose prototype is obj ie obj2__proto__ = obj
+obj.add();
+
+-----------another way-----
+
+function Foo(){...}
+Funciion Bar(){ Foo.appply(this).....}
+Bar.prototype =Object.create(Foo.prototype); 
+//or 
+Bar.prototype =new Foo(); 
+====Design pattern########################
+##Callback : It a goood design patter becaue in this we give caantroll to call a function to another function/API 
+#callback is a kind of inversan of control means we are giving cantrol to someone else to call our function 
+# there are many new feature in ECMA6 like Promise,  Generator -yeald, async-wait fuction etc.
+##Promise and async function example
+function resolveAfter2Seconds(x) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve("sol");
+    }, 2000);
+  });
+}
+function getRandomPonyFooArticle () {
+  return new Promise((resolve, reject) => {
+  var err = "10"
+      if (err) {
+        reject(err);
+      }else{
+       resolve("resolved");
+    }
+
+  });
+}
+
+async function add1(x) {
+  const a = await resolveAfter2Seconds(20);
+  const b = await resolveAfter2Seconds(30);
+  return x + a + b;
+}
+
+async function myRej() {
+  try{
+    const b = await getRandomPonyFooArticle();
+    return b;
+  }catch(e){
+     return e;
+  }
+return "abcd";
+}
+
+myRej().then(v => {
+  console.log(v);  // prints 60 after 4 seconds.
+});
+
+add1(10).then(v => {
+  console.log(v);  // prints 60 after 4 seconds.
+});
+
+######Generator fuction example
+function* idMaker() {
+  var index = 0;
+  while (index < 3)
+    yield index++;
+}
+
+var gen = idMaker();
+
+console.log(gen.next().value); // 0
+console.log(gen.next().value); // 1
+console.log(gen.next().value); // 2
+console.log(gen.next().value); // undefined
