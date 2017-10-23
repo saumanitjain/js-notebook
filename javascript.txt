@@ -1,3 +1,29 @@
+$$$$Number: It's a 16 digit floating number
+#Number ("string") coverts string into number, if not convertable then return NaN
+$$$String : in javascript string are seq of charactor and not mutable,
+#Sing quote and double quote both are same
+#String(1212) : converts number into string
+#String has many useful function like charAt, IndexOf, split, slice, toUpperCase, toLowerCase
+$$$$$Boolean: true/false
+# value is falsey (false, null,undefined, NaN, 0, "") returns false
+#value is truthy (not a falsey value ex "false", "null" "NaN", "0") returns true
+# !! always returns either true/false !!undefined returns false
+#null,
+#undefined
+NaN : means not a number,comes from a erronious statment. It's type is Number
+# NaN is not equal to anything including NaN.
+NaN == null  -> false
+NaN < null  -> false
+NaN > null  -> false 
+# Rest is object in Js even function
+# javascript is losely typed language means
+#  == performs type conversion
+#  === does not perform type conversion
+# It has all the airthamatic, logical operator, and comparision operator like other languages.
+# It also has bitwise operator like &,|,^, >>, << but useless,
+# because it covert floating point number into integer and apply operator (>> multiply by 2) and convert back agian in 16 digit floating point number.
+$$$$ it has all statment like java, if else, for , swith case, try catch while
+# Object.hasOwnProperty('name');
 JavaScript Best Practice
 $$$Avoid global variables whenever possible
 $$$$Bad cause
