@@ -30,9 +30,8 @@ $$$$Bad cause
 #Name clash and one can change and another will be affected
 #minimize the memory
 ##Use one global object and encapsulate all extreamly needed variables into that object
-##Use closer to avoid global variables
 ##Use var to define a variable otherwise it will be global
-# use closer to and object to minimize global variables
+# use closer and object to minimize global variables
 $$$Variable naming convension
 # Use the meaningful name so that other can understand the code easily
 # Not to big and not to short (short and meaningful)
@@ -267,7 +266,7 @@ gulp('default' [http,watch])
 
 
 --------------------------------------------------------------------------------------------------------------------------------------
-######################################Advance JavaScirpt#####################################################################################
+######################################Advance JavaScirpt##############################################
 # Javascript execute the code in two pass
  # 1) Hoisting (variable and function hoisting)
  # 2) Parse and run
@@ -317,7 +316,9 @@ f = function(){
 #output : -f is not a funciton
 
 ###########SCOPE####
-#JavaScirpt two scope scope 1) function 2) block.
+#JavaScirpt has two scope  
+1) function
+2) block.
 #JavaScirpt first find the variable in local scope if not find then go to immidiate upper label and so on and if still not find then
 # 1) (in not strict mode )it declare at top most label (window) and assing a value undefined ie var name =undefined;
 # 2) (in strict mode)  if variable is not found then it gives error like undeclare. ie does not decare the variable for us.
@@ -331,7 +332,7 @@ f = function(){
 # rest is 'funciton expression' ex var fun = funciton myFn(){};
 # Use funciton declaration over function expression to take advantage of hoisting
 ########eval()
-## Even ever use it.cause
+## Never ever use it.cause
 var a =12;
 function myFunc(str){
 eval(str);
@@ -341,13 +342,12 @@ myFunc("var a=20;");
 ############Dynamic scoping######
 
 funciton foo(){
- console.log(str); //print "dynamic scope"
+ console.log(this.str); //print "dynamic scope"
 }
-function bar(){
- var str ="dynamic scope"
- foo();
-}
-bar();
+var obj1 = {str:"obj1"}
+var obj2 = {str:"obj2"}
+obj1.foo(); //obj1
+obj1.foo(); //obj2
 #################this keyboard#############################
 # In javascript, every funciton has a reference of it's execution context , called this (and in 'use strict' mode this hold undefined value)
 ex:-
@@ -361,9 +361,9 @@ function baz(){
 var name ="window"
 foo();
 #output : window # because 
-##foo.call(obj); or foo.app(obj)//calls the foo function on "obj" object in another words obj is 'this' in foo funciton.
+#foo.call(obj); or foo.app(obj)//calls the foo function on "obj" object in another words obj is 'this' in foo funciton.
 #call and apply both are same, the only diff is way of passing argument
-# food.bind(obj) //bind the foo funciton to obj ie keyboard this would be obj inside food function.
+#food.bind(obj) //bind the foo funciton to obj ie keyboard this would be obj inside food function.
 ###############################new #######################
 #It does below things.
  #
@@ -373,7 +373,7 @@ var add =  new food(){
 	 return this; //At the end of this keyboard is returned;
  }
  #so add =this; //at the end of function called with new keyboard
-# keyboard new has higher precedance explicit bid ie
+# keyboard new has higher precedance then explicit binding ie
 new fn.call(obj) > fn.call(obj) > context > can global
 #####################Closer####################33
 #Lexical scoping : function find some variable inside it then it use it otherwise it find the variable at it's immidiate parent funciton and so on... is called lexical or compile time scoping.
@@ -401,7 +401,7 @@ obj.__proto__ == ao
 # since in JavaScirpt, each object is a function so it also has constructor property.
 Foo.constructor = Function
 Foo.__proto__ =  aof
-# Do say or never say JavaScirpt has inharitance because inharitance means one object copy the something from other obj.
+# Dont say or never say JavaScirpt has inharitance because inharitance means one object copy the something from other obj.
 # JavaScirpt have prototypical inharitance means obe object does not copy anything from another obj it links them
 ## OLOO : object linked to other object
 ## Object inharitance machenics;
@@ -415,7 +415,7 @@ obj.add();
 -----------another way-----
 
 function Foo(){...}
-Funciion Bar(){ Foo.appply(this).....}
+funciion Bar(){ Foo.appply(this).....}
 Bar.prototype =Object.create(Foo.prototype); 
 //or 
 Bar.prototype =new Foo(); 
