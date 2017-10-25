@@ -1,3 +1,4 @@
+https://www.toptal.com/javascript/interview-questions
 $$$$Number: It's a 16 digit floating number
 #Number ("string") coverts string into number, if not convertable then return NaN
 $$$String : in javascript string are seq of charactor and not mutable,
